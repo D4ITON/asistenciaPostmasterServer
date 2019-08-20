@@ -27,7 +27,7 @@ function LoginCredentials(req, res, next){
 }
 
 function getList(req, res, next){
-	db.any("select * from usuarios")
+	db.any("SELECT * FROM usuarios")
 	.then(function(data){
 		res.status(200)
 		.json({
@@ -42,8 +42,8 @@ function getList(req, res, next){
 }
 
 // solicita un dato
-function getOne(req, res, next){
-	db.any("select * from usuarios where id='"+req.params.id+"'")
+function getOneCodigo(req, res, next){
+	db.any("SELECT * FROM usuarios WHERE codigo='"+req.params.id+"'")
 	.then(function(data){
 		res.status(200)
 		.json({
@@ -59,7 +59,9 @@ function getOne(req, res, next){
 
 // POST inserta un nuevo usuario
 function Create(req, res, next){
-	db.none("insert into usuarios(nombre) values (${nombre})", req.body)
+	db.none(
+		"INSERT INTO usuarios(codigo, apellidos, nombres, contrasena, rol_id) VALUES ($1, $2, $3, $4, $5)",
+		[ req.body.codigo, req.body.apellidos, req.body.nombres, req.body.contrasena, req.body.rol])
 	.then(function(data){
 		res.status(200)
 		.json({
@@ -98,12 +100,28 @@ function Delete(req, res, next){
 	})
 }
 
+// truncate table and restar identity
+function TruncateTable(req, res, next){
+	db.none("TRUNCATE usuarios RESTART IDENTITY")
+	.then(function(data){
+		res.status(200)
+		.json({
+			status: 'success',
+			message: 'All data deleted'
+		})
+	})
+	.catch(function(err){
+		return next(err);
+	})
+}
+
 module.exports = {
 	LoginCredentials: LoginCredentials,
 	// usuarios
 	getList: getList,
-	getOne: getOne,
+	getOneCodigo: getOneCodigo,
 	Create: Create,
 	Edit: Edit,
 	Delete: Delete,
+	TruncateTable: TruncateTable,
 }

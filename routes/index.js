@@ -12,9 +12,10 @@ router.post('/login', db.LoginCredentials);
 
 // Users API REST
 router.get('/api/users', db.getList);
-router.get('/api/users/:id', db.getOne);
+router.get('/api/users/:id', db.getOneCodigo);
 router.post('/api/users', db.Create);
 router.put('/api/users/:id', db.Edit);
 router.delete('/api/users/:id', db.Delete);
+router.delete('/api/users', db.TruncateTable);
 
 module.exports = router;
