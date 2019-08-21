@@ -16,6 +16,10 @@ router.get('/api/users/:id', db.getOneCodigo);
 router.post('/api/users', db.Create);
 router.put('/api/users/:id', db.Edit);
 router.delete('/api/users/:id', db.Delete);
-router.delete('/api/users', db.TruncateTable);
+router.delete('/api/users', db.TruncateTableUsuarios);
+// Asistencias API REST
+router.get('/api/asistencias', db.getAsistencias);
+router.post('/api/marcaasistencia', db.marcaAsistencia);
+router.delete('/api/asistencias', db.TruncateTableAsistencias);
 
 module.exports = router;
