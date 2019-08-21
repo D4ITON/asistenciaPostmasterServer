@@ -100,8 +100,8 @@ function Delete(req, res, next){
 	})
 }
 
-// truncate table and restar identity
-function TruncateTable(req, res, next){
+// truncate table usuarios and restar identity
+function TruncateTableUsuarios(req, res, next){
 	db.none("TRUNCATE usuarios RESTART IDENTITY")
 	.then(function(data){
 		res.status(200)
@@ -115,6 +115,57 @@ function TruncateTable(req, res, next){
 	})
 }
 
+/*
+ * ASISTENCIAS API
+ */
+
+// obtiene todas las asistenciass
+function getAsistencias(req, res, next){
+	db.any("SELECT * FROM asistencias")
+	.then(function(data){
+		res.status(200)
+		.json({
+			status: 'success',
+			data: data,
+			message: 'Retrived list'
+		})
+	})
+	.catch(function(err){
+		return next(err);
+	})
+}
+
+// truncate table asistencias and restar identity
+function TruncateTableAsistencias(req, res, next){
+	db.none("TRUNCATE asistencias RESTART IDENTITY")
+	.then(function(data){
+		res.status(200)
+		.json({
+			status: 'success',
+			message: 'All data deleted'
+		})
+	})
+	.catch(function(err){
+		return next(err);
+	})
+}
+
+// procedimiento almacenado marcar asistencia
+function marcaAsistencia(req, res, next){
+	db.func('marcaasistencia', req.body.codigo)
+    .then(function(data){
+		res.status(200)
+		.json({
+			status: 'success',
+			data: data[0],
+			message: 'Operacion exitosa'
+		})
+	})
+	.catch(function(err){
+		return next(err);
+	});
+}
+
 module.exports = {
 	LoginCredentials: LoginCredentials,
 	// usuarios
@@ -123,5 +174,9 @@ module.exports = {
 	Create: Create,
 	Edit: Edit,
 	Delete: Delete,
-	TruncateTable: TruncateTable,
+	TruncateTableUsuarios: TruncateTableUsuarios,
+	// asistencias
+	getAsistencias: getAsistencias,
+	TruncateTableAsistencias: TruncateTableAsistencias,
+	marcaAsistencia: marcaAsistencia,
 }
