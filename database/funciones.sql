@@ -59,3 +59,21 @@ SELECT a.id, u.codigo, u.apellidos, u.nombres, to_char(a.hora, 'HH24:MI')AS hora
 alter table usuarios
    add constraint UQ_usuarios_codigo
    unique (codigo);
+
+
+/** 
+ *  Crea funcion para mostrar reportes (pantalla inicio)
+ */
+CREATE OR REPLACE FUNCTION listar_reporteasistencia()
+RETURNS SETOF bigint AS
+$BODY$
+BEGIN
+    RETURN QUERY (SELECT  count(asistio) as asistentes FROM asistencias);
+	RETURN QUERY (SELECT count(inscrito) as inscritos FROM usuarios);
+	RETURN QUERY (SELECT count(id) as estudiantes FROM usuarios);
+	
+END
+$BODY$ LANGUAGE 'plpgsql'
+
+
+select listar_reporteasistencia()

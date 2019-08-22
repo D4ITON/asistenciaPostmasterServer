@@ -22,5 +22,7 @@ router.get('/api/asistencias', db.getAsistencias);
 router.get('/api/obtieneasistentes', db.obtieneasistentes);
 router.post('/api/marcaasistencia', db.marcaAsistencia);
 router.delete('/api/asistencias', db.TruncateTableAsistencias);
+// reporte asistencia
+router.get('/api/reporteasistencias', db.listar_reporteasistencia);
 
 module.exports = router;

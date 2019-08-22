@@ -182,6 +182,22 @@ function obtieneasistentes(req, res, next){
 	});
 }
 
+// obtiene reportes para pantalla inicial
+function listar_reporteasistencia(req, res, next){
+	db.func('listar_reporteasistencia')
+    .then(function(data){
+		res.status(200)
+		.json({
+			status: 'success',
+			data: data,
+			message: 'Operacion exitosa'
+		})
+	})
+	.catch(function(err){
+		return next(err);
+	});
+}
+
 module.exports = {
 	LoginCredentials: LoginCredentials,
 	// usuarios
@@ -196,4 +212,6 @@ module.exports = {
 	TruncateTableAsistencias: TruncateTableAsistencias,
 	marcaAsistencia: marcaAsistencia,
 	obtieneasistentes: obtieneasistentes,
+	// reporte
+	listar_reporteasistencia: listar_reporteasistencia,
 }
