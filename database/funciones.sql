@@ -24,7 +24,7 @@ BEGIN
 		RAISE NOTICE 'Usuario existe';
 		IF NOT EXISTS (select asistio from asistencias where user_id=(select id from usuarios where codigo=$1)) THEN
 			-- marca asistencia
-			INSERT INTO asistencias (user_id, asistio, hora) VALUES ((SELECT id FROM usuarios WHERE codigo=$1),1,NOW());
+			INSERT INTO asistencias (user_id, asistio, hora) VALUES ((SELECT id FROM usuarios WHERE codigo=$1),true,NOW());
 			RAISE NOTICE 'Asistencia marcada';
 			RETURN nombre;
 		ELSE
@@ -52,3 +52,10 @@ SELECT marcaAsistencia(2015119063);
 
 CREATE OR REPLACE VIEW obtieneasistentes AS
 SELECT a.id, u.codigo, u.apellidos, u.nombres, to_char(a.hora, 'HH24:MI')AS hora FROM asistencias a INNER JOIN usuarios u ON a.user_id=u.id ORDER BY a.hora ASC;
+
+/** 
+ *  Crea contraint unique al codigo de usuarios
+ */
+alter table usuarios
+   add constraint UQ_usuarios_codigo
+   unique (codigo);
