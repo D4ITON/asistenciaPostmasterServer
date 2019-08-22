@@ -19,6 +19,7 @@ router.delete('/api/users/:id', db.Delete);
 router.delete('/api/users', db.TruncateTableUsuarios);
 // Asistencias API REST
 router.get('/api/asistencias', db.getAsistencias);
+router.get('/api/obtieneasistentes', db.obtieneasistentes);
 router.post('/api/marcaasistencia', db.marcaAsistencia);
 router.delete('/api/asistencias', db.TruncateTableAsistencias);
 
