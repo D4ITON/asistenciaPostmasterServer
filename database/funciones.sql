@@ -24,7 +24,7 @@ BEGIN
 		RAISE NOTICE 'Usuario existe';
 		IF NOT EXISTS (select asistio from asistencias where user_id=(select id from usuarios where codigo=$1)) THEN
 			-- marca asistencia
-			INSERT INTO asistencias (user_id, asistio) VALUES ((SELECT id FROM usuarios WHERE codigo=$1),1);
+			INSERT INTO asistencias (user_id, asistio, hora) VALUES ((SELECT id FROM usuarios WHERE codigo=$1),1,NOW());
 			RAISE NOTICE 'Asistencia marcada';
 			RETURN nombre;
 		ELSE
@@ -41,3 +41,14 @@ LANGUAGE 'plpgsql';
 
 -- Ejecutar funcion de esta manera:
 SELECT marcaAsistencia(2015119063);
+
+/** 
+ *  Vista que muestra a los asistentes
+ *  @returns {smallint} id - codigo de asistencia
+ *  @returns {integer} codigo - codigo de usuario
+ *  @returns {Varchar} apellidos - apellidos de usuario
+ *  @returns {Varchar} nombres - nombres de usuario
+ */
+
+CREATE OR REPLACE VIEW obtieneasistentes AS
+SELECT a.id, u.codigo, u.apellidos, u.nombres, to_char(a.hora, 'HH24:MI')AS hora FROM asistencias a INNER JOIN usuarios u ON a.user_id=u.id ORDER BY a.hora ASC;
