@@ -60,8 +60,8 @@ function getOneCodigo(req, res, next){
 // POST inserta un nuevo usuario
 function Create(req, res, next){
 	db.none(
-		"INSERT INTO usuarios(codigo, apellidos, nombres, contrasena, rol_id) VALUES ($1, $2, $3, $4, $5)",
-		[ req.body.codigo, req.body.apellidos, req.body.nombres, req.body.contrasena, req.body.rol])
+		"INSERT INTO usuarios(codigo, apellidos, nombres, contrasena, rol_id, inscrito) VALUES ($1, $2, $3, $4, $5, $6)",
+		[ req.body.codigo, req.body.apellidos, req.body.nombres, req.body.contrasena, req.body.rol, req.body.inscrito])
 	.then(function(data){
 		res.status(200)
 		.json({
@@ -152,7 +152,7 @@ function TruncateTableAsistencias(req, res, next){
 
 // procedimiento almacenado marcar asistencia
 function marcaAsistencia(req, res, next){
-	db.func('marcaasistencia', req.body.codigo)
+	db.func('marcaAsistencia', req.body.codigo)
     .then(function(data){
 		res.status(200)
 		.json({
