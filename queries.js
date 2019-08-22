@@ -166,6 +166,22 @@ function marcaAsistencia(req, res, next){
 	});
 }
 
+// vista que obtiene los datos de los asistentes
+function obtieneasistentes(req, res, next){
+	db.any("SELECT a.id, u.codigo, u.apellidos, u.nombres, to_char(a.hora, 'HH24:MI')AS hora FROM asistencias a INNER JOIN usuarios u ON a.user_id=u.id ORDER BY a.hora ASC")
+	.then(function(data){
+		res.status(200)
+		.json({
+			status: 'success',
+			data: data,
+			message: 'Obtiene asistentes'
+		})
+	})
+	.catch(function(err){
+		return next(err);
+	});
+}
+
 module.exports = {
 	LoginCredentials: LoginCredentials,
 	// usuarios
@@ -179,4 +195,5 @@ module.exports = {
 	getAsistencias: getAsistencias,
 	TruncateTableAsistencias: TruncateTableAsistencias,
 	marcaAsistencia: marcaAsistencia,
+	obtieneasistentes: obtieneasistentes,
 }
